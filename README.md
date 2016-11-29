@@ -20,7 +20,7 @@ Some of them were HTTP REST and JSON specific. `httest` was best option but not
 very confortable .htt files especially for Testers with little knowledge of HTTP
 protocol and programming.
 
-Therefore I wrote `Adaptest`, which is basically a `httest` YAML wrapper.
+Therefore I wrote `Adaptest` which is basically a `httest` YAML wrapper.
  
 # Features
  
@@ -41,7 +41,7 @@ even in this alpha stage it supports:
 ## From source
 
 ```bash
-git clone 
+git clone git@github.com:Edke/adaptest.git
 cd adaptest
 sudo python setup.py install
 ```
@@ -65,5 +65,4 @@ Please consider this tool as early alpha, not ready for production. Testing is m
 
 # Contributing
 
-For bugs, feature requests or code contributing please use [Github project page](xs).
-
+For bugs, feature requests or code contributing please use [Github project page](https://github.com/Edke/adaptest).
