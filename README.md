@@ -1,7 +1,7 @@
-Adaptest - a lightweight yaml wrapper for httest
+Adaptest - a lightweight YAML wrapper for httest
 ================================================
 
-# Overview
+## Overview
 
 There are many powerful tools for automated HTTP-based tests, and and even in Python:
 
@@ -22,7 +22,7 @@ protocol and programming.
 
 Therefore I wrote `Adaptest` which is basically a `httest` YAML wrapper.
  
-# Features
+## Features
  
 As `httest` is really powerful tool, not everything is currently supported. But
 even in this alpha stage it supports:
@@ -36,9 +36,9 @@ even in this alpha stage it supports:
 - POST (application/x-www-form-urlencoded)
 - Auto referer from previous test 
 
-# Installation
+## Installation
 
-## From source
+### From source
 
 ```bash
 git clone git@github.com:Edke/adaptest.git
@@ -46,23 +46,23 @@ cd adaptest
 sudo python setup.py install
 ```
 
-## From PyPI
+### From PyPI
 
 ```bash
 pip install adaptest
 ```
 
-# Testing
+## Testing
 
 ```bash
 cd tests
 pytest
 ```
 
-# Status
+## Status
 
 Please consider this tool as early alpha, not ready for production. Testing is more than welcome.
 
-# Contributing
+## Contributing
 
 For bugs, feature requests or code contributing please use [Github project page](https://github.com/Edke/adaptest).
