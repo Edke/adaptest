@@ -1,0 +1,52 @@
+CLIENT
+_AUTO_COOKIE on
+
+_REQ example.com SSL:443
+_DEBUG user profile without auth
+__GET /en/account/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__Connection: keep-alive
+__
+_EXPECT . "302 Found"
+_EXPECT headers "Location: /en/account/log-in/"
+_WAIT
+_CLOSE
+
+_REQ example.com SSL:443
+_DEBUG login page to get cookie
+__GET /en/account/log-in/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__
+_EXPECT . "200 OK"
+_MATCH headers "csrftoken=([^;]+)" csrf
+_WAIT
+_CLOSE
+
+_REQ example.com SSL:443
+_DEBUG login page
+__POST /en/account/log-in/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__Content-Length: AUTO
+__Content-Type: application/x-www-form-urlencoded
+__Referer: https://example.com/en/account/log-in/
+__
+__csrfmiddlewaretoken=$csrf&username=eduard@adaptiware.com&password=Mys3cr3tp455&
+_EXPECT . "302 Found"
+_WAIT
+_CLOSE
+
+_REQ example.com SSL:443
+_DEBUG user profile after auth
+__GET /en/account/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__Connection: keep-alive
+__
+_EXPECT . "200 OK"
+_WAIT
+_CLOSE
+
+END

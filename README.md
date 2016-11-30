@@ -36,6 +36,121 @@ even in this alpha stage it supports:
 - POST (application/x-www-form-urlencoded)
 - Auto referer from previous test 
 
+## Examples
+
+`Adaptest` turns yaml config of test:
+
+```yml
+---
+
+config:
+ auto_cookie: on
+
+tests:
+  - name: user profile without auth
+    url: /en/account/
+    method: get
+    headers:
+      - Connection: keep-alive
+    expect:
+      - scope: .
+        value: "302 Found"
+      - scope: headers
+        value: "Location: /en/account/log-in/"
+
+  - name: login page to get cookie
+    url: /en/account/log-in/
+    method: get
+    expect:
+      - scope: .
+        value: 200 OK
+    match:
+      - scope: headers
+        pattern: "csrftoken=([^;]+)"
+        variable: csrf
+
+  - name: login page
+    url: /en/account/log-in/
+    method: post
+    referer: auto
+    headers:
+      - Content-Type: application/x-www-form-urlencoded
+    data:
+      - csrfmiddlewaretoken: $csrf
+      - username: eduard@adaptiware.com
+      - password: Mys3cr3tp455
+    expect:
+      - scope: .
+        value: "302 Found"
+
+  - name: user profile after auth
+    url: /en/account/
+    method: get
+    headers:
+      - Connection: keep-alive
+    expect:
+      - scope: .
+        value: 200 OK
+```
+
+into this:
+
+```
+CLIENT
+_AUTO_COOKIE on
+
+_REQ example.com SSL:443
+_DEBUG user profile without auth
+__GET /en/account/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__Connection: keep-alive
+__
+_EXPECT . "302 Found"
+_EXPECT headers "Location: /en/account/log-in/"
+_WAIT
+_CLOSE
+
+_REQ example.com SSL:443
+_DEBUG login page to get cookie
+__GET /en/account/log-in/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__
+_EXPECT . "200 OK"
+_MATCH headers "csrftoken=([^;]+)" csrf
+_WAIT
+_CLOSE
+
+_REQ example.com SSL:443
+_DEBUG login page
+__POST /en/account/log-in/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__Content-Length: AUTO
+__Content-Type: application/x-www-form-urlencoded
+__Referer: https://example.com/en/account/log-in/
+__
+__csrfmiddlewaretoken=$csrf&username=eduard@adaptiware.com&password=Mys3cr3tp455&
+_EXPECT . "302 Found"
+_WAIT
+_CLOSE
+
+_REQ example.com SSL:443
+_DEBUG user profile after auth
+__GET /en/account/ HTTP/1.1
+__Host: example.com
+__Cookie: AUTO
+__Connection: keep-alive
+__
+_EXPECT . "200 OK"
+_WAIT
+_CLOSE
+
+END
+
+```
+
 ## Installation
 
 ### From source

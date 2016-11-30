@@ -1,0 +1,50 @@
+---
+
+config:
+ auto_cookie: on
+
+tests:
+  - name: user profile without auth
+    url: /en/account/
+    method: get
+    headers:
+      - Connection: keep-alive
+    expect:
+      - scope: .
+        value: "302 Found"
+      - scope: headers
+        value: "Location: /en/account/log-in/"
+
+  - name: login page to get cookie
+    url: /en/account/log-in/
+    method: get
+    expect:
+      - scope: .
+        value: 200 OK
+    match:
+      - scope: headers
+        pattern: "csrftoken=([^;]+)"
+        variable: csrf
+
+  - name: login page
+    url: /en/account/log-in/
+    method: post
+    referer: auto
+    headers:
+      - Content-Type: application/x-www-form-urlencoded
+    data:
+      - csrfmiddlewaretoken: $csrf
+      - username: eduard@adaptiware.com
+      - password: Mys3cr3tp455
+    expect:
+      - scope: .
+        value: "302 Found"
+
+  - name: user profile after auth
+    url: /en/account/
+    method: get
+    headers:
+      - Connection: keep-alive
+    expect:
+      - scope: .
+        value: 200 OK
