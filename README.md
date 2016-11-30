@@ -24,8 +24,8 @@ Therefore I wrote `Adaptest` which is basically a `httest` YAML wrapper.
  
 ## Features
  
-As `httest` is really powerful tool, not everything is currently supported. But
-even in this alpha stage it supports:
+As `httest` is really powerful tool, `Adaptest` does not support everything at this stage. But
+even while in alpha stage it supports:
 
 - Sequence HTTP testing
 - Cookies support
