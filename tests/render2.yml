@@ -1,0 +1,24 @@
+---
+
+config:
+ auto_cookie: on
+
+tests:
+  - name: HTTPS request on google.com
+    url: /
+    method: get
+    headers:
+      - Connection: keep-alive
+      - Accept-language: en-US;q=0.4,en;q=0.2
+    expect:
+      - scope: .
+        value: "302 Found"
+      - scope: headers
+        value: "Location: https://www.google"
+
+  - name: query google
+    url: /?q=adaptest
+    method: get
+    expect:
+      - scope: .
+        value: 302 Found

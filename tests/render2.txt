@@ -1,0 +1,27 @@
+CLIENT
+_AUTO_COOKIE on
+
+_REQ google.com SSL:443
+_DEBUG HTTPS request on google.com
+__GET / HTTP/1.1
+__Host: google.com
+__Cookie: AUTO
+__Connection: keep-alive
+__Accept-language: en-US;q=0.4,en;q=0.2
+__
+_EXPECT . "302 Found"
+_EXPECT headers "Location: https://www.google"
+_WAIT
+_CLOSE
+
+_REQ google.com SSL:443
+_DEBUG query google
+__GET /?q=adaptest HTTP/1.1
+__Host: google.com
+__Cookie: AUTO
+__
+_EXPECT . "302 Found"
+_WAIT
+_CLOSE
+
+END

@@ -1,0 +1,17 @@
+---
+
+config:
+ auto_cookie: on
+
+tests:
+  - name: HTTP request on google.com
+    url: /
+    method: get
+    headers:
+      - Connection: keep-alive
+      - Accept-language: en-US;q=0.4,en;q=0.2
+    expect:
+      - scope: .
+        value: "302 Moved"
+      - scope: headers
+        value: "Location: http://www.google"

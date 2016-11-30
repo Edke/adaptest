@@ -1,0 +1,35 @@
+CLIENT
+{% if config.auto_cookie %}
+_AUTO_COOKIE on
+{% endif %}
+{% for test in tests %}
+
+_REQ {{request}}
+_DEBUG {{test.name}}
+__{{test.method|upper}} {{test.url}} HTTP/1.1
+__Host: {{host}}
+{% if config.auto_cookie %}
+__Cookie: AUTO
+{% endif %}
+{% if test.post %}
+__Content-Length: AUTO
+{% endif %}
+{% for header, value in test.headers_tuple %}
+__{{header}}: {{value}}
+{% endfor %}
+__
+{% if test.data %}
+__{{ test.data }}
+{% endif %}
+{% for expect_item in test.expect %}
+_EXPECT {{ expect_item['scope']}} "{{expect_item['value']}}"
+{% endfor %}
+{% for match_item in test.match %}
+_MATCH {{ match_item['scope']}} "{{match_item['pattern']}}" {{match_item['variable']}}
+{% endfor %}
+_WAIT
+_CLOSE
+{% endfor %}
+
+END
+
